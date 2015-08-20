@@ -6,8 +6,8 @@
 #
 # Commands:
 #   hubot time in <location> - Ask hubot for a time in a location
-#   hubot <time> in <location> - Convert a given time to a given location, e.g. "1pm in Sydney"
-#   hubot <time> from <location> to <location> - Convert a given time between 2 locations
+#   hubot convert <time> in <location> - Convert a given time to a given location, e.g. "1pm in Sydney"
+#   hubot convert <time> from <location> to <location> - Convert a given time between 2 locations
 #   hubot set timezone offset to <offset> - Set the default timezone offset, can be hours or minutes
 #
 # Notes:
@@ -100,12 +100,12 @@ module.exports = (robot) ->
     robot.brain.data.timezoneOffset = offset
     res.send("Default timezone offset is set to #{offset}")
 
-  robot.respond /(.*) from (.*) to (.*)/i, (res) ->
+  robot.respond /convert (.*) from (.*) to (.*)/i, (res) ->
     timestamp = parseTime(res.match[1])
     return unless timestamp
     convertTime(res, timestamp, res.match[2], res.match[3])
 
-  robot.respond /(.*) in (.*)/i, (res) ->
+  robot.respond /convert (.*) in (.*)/i, (res) ->
     requestedTime = res.match[1]
     defaultOffset = robot.brain.data.timezoneOffset || moment().utcOffset()
     if requestedTime == 'time'
